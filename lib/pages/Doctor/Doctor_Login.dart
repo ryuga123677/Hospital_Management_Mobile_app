@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hospital/pages/Doctor/Doctor_Main.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Utils/Utils.dart';
 class DoctorLogin extends StatefulWidget {
   const DoctorLogin({super.key});
 
@@ -40,7 +45,26 @@ class _DoctorLoginState extends State<DoctorLogin> {
 
                 ),
               ),
+              ElevatedButton(onPressed: ()async{
+                final response = await http.post(Uri.parse('http://10.0.2.2:3000/doctorlogin'),
 
+                    body: {
+                      'username':username.text.toString(),
+                      'password': password.text.toString(),
+                    });
+                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                if(response.body=="success")
+                {
+                  utils().toastmessage('Account created');
+                  await prefs.setString('doctorname', username.text.toString());
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorMainPage()));
+
+                }
+                else
+                {
+                  utils().toastmessage('Something went wrong');
+                }
+              }, child: Text('Login'))
 
 
             ],

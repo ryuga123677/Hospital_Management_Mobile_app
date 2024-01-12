@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hospital/pages/Patient/PatientMainPage.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Utils/Utils.dart';
 class PatientLogin extends StatefulWidget {
   const PatientLogin({super.key});
 
@@ -7,7 +12,6 @@ class PatientLogin extends StatefulWidget {
 }
 var formkey=GlobalKey<FormState>();
 var username=TextEditingController();
-var email=TextEditingController();
 var password=TextEditingController();
 var hospitalname=TextEditingController();
 class _PatientLoginState extends State<PatientLogin> {
@@ -49,7 +53,29 @@ class _PatientLoginState extends State<PatientLogin> {
                     border: OutlineInputBorder()
                 ),
               ),
+              ElevatedButton(onPressed: ()async{
+                final response = await http.post(Uri.parse('http://10.0.2.2:3000/patientlogin'),
 
+                    body: {
+                      'username':username.text.toString(),
+                      'password': password.text.toString(),
+
+                      'hospitalname': hospitalname.text.toString(),
+                    });
+                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                if(response.body=="success")
+                {
+                  utils().toastmessage('Account created');
+                  await prefs.setString('patientname', username.text.toString());
+                  await prefs.setString('hospitalname', hospitalname.text.toString());
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>PatientMainPage()));
+
+                }
+                else
+                {
+                  utils().toastmessage('Something went wrong');
+                }
+              }, child: Text('Login'))
 
             ],
           ),

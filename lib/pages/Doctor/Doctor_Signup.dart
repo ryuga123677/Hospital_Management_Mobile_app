@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hospital/pages/Doctor/Doctor_Login.dart';
+import 'package:http/http.dart' as http;
+
+import '../Utils/Utils.dart';
+
 class DoctorSignup extends StatefulWidget {
   const DoctorSignup({super.key});
 
@@ -10,6 +15,7 @@ var username=TextEditingController();
 var email=TextEditingController();
 var password=TextEditingController();
 var hospitalname=TextEditingController();
+var speciality=TextEditingController();
 class _DoctorSignupState extends State<DoctorSignup> {
   @override
   Widget build(BuildContext context) {
@@ -59,14 +65,36 @@ class _DoctorSignupState extends State<DoctorSignup> {
                 ),
               ),
               TextField(
-                controller: hospitalname,
+                controller: speciality,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.health_and_safety_outlined),
                     hintText: 'Speciality',
                     border: OutlineInputBorder()
                 ),
-              )
+              ),
+              ElevatedButton(onPressed: ()async{
+                final response = await http.post(Uri.parse('http://10.0.2.2:3000/doctorregister'),
+
+                    body: {
+                      'username':username.text.toString(),
+                      'password': password.text.toString(),
+                      'email': email.text.toString(),
+
+                      'hospitalname':hospitalname.text.toString(),
+                      'speciality':speciality.text.toString(),
+                    });
+                if(response.body=="success")
+                {
+                  utils().toastmessage('Account created');
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorLogin()));
+
+                }
+                else
+                {
+                  utils().toastmessage('Something went wrong');
+                }
+              }, child: Text('Signup'))
 
             ],
           ),

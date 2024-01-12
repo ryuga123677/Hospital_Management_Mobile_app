@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../Utils/Utils.dart';
+import 'Owner_Login.dart';
 class OwnerSignup extends StatefulWidget {
   const OwnerSignup({super.key});
 
@@ -11,15 +15,21 @@ var email=TextEditingController();
 var password=TextEditingController();
 var hospitalname=TextEditingController();
 class _OwnerSignupState extends State<OwnerSignup> {
+  final Map<String, dynamic> postData = {
+    'username':username.text,
+    'password': password.text,
+    'email': email.text,
+
+    'hospitalname':hospitalname.text,
+  };
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Form(
-          key: formkey,
-          child: Column(
-            children: [
-              TextField(
+        child: Column(
+          children: [
+            Form( key: formkey,
+              child: TextFormField(
                 controller: username,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -29,7 +39,9 @@ class _OwnerSignupState extends State<OwnerSignup> {
                 ),
 
               ),
-              TextField(
+            ),
+            Form(
+              child: TextFormField(
                 controller: email,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -38,7 +50,9 @@ class _OwnerSignupState extends State<OwnerSignup> {
                     border: OutlineInputBorder()
                 ),
               ),
-              TextField(
+            ),
+            Form(
+              child: TextFormField(
                 controller: password,
                 keyboardType: TextInputType.text,
                 obscureText: true,
@@ -49,7 +63,9 @@ class _OwnerSignupState extends State<OwnerSignup> {
 
                 ),
               ),
-          TextField(
+            ),
+        Form(
+          child: TextFormField(
             controller: hospitalname,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
@@ -57,10 +73,31 @@ class _OwnerSignupState extends State<OwnerSignup> {
                 hintText: 'Hospital Name',
                 border: OutlineInputBorder()
             ),
-          )
-
-            ],
           ),
+        ),
+            ElevatedButton(onPressed: ()async{
+            final response = await http.post(Uri.parse('http://10.0.2.2:3000/ownerregister'),
+
+            body: {
+              'username':username.text.toString(),
+              'password': password.text.toString(),
+              'email': email.text.toString(),
+
+              'hospitalname':hospitalname.text.toString(),
+            });
+            if(response.body=="success")
+              {
+                utils().toastmessage('Account created');
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>OwnerLogin()));
+
+              }
+            else
+              {
+                utils().toastmessage('Something went wrong');
+              }
+            }, child: Text('Signup'))
+
+          ],
         ),
       ),
     );
