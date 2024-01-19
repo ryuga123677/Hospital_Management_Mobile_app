@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hospital/pages/Patient/DoctorList.dart';
+import 'package:hospital/pages/Patient/Doctor_Treatingme.dart';
+import 'package:hospital/pages/Patient/Reports.dart';
 class PatientMainPage extends StatefulWidget {
   const PatientMainPage({super.key});
 
@@ -12,9 +15,9 @@ class _PatientMainPageState extends State<PatientMainPage> {
     return Scaffold(
       body: Column(
         children: [
-          TextButton(onPressed: ()=>{}, child: Text("Doctors Avaliable")),
-          TextButton(onPressed: ()=>{}, child: Text("Doctor Treating me")),
-          TextButton(onPressed: ()=>{}, child: Text("Present Reports")),
+          TextButton(onPressed: ()=>{Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorList()))}, child: Text("Doctors Avaliable")),
+          TextButton(onPressed: ()=>{Navigator.push(context, MaterialPageRoute(builder: (context)=>DoctorTreating()))}, child: Text("Doctor Treating me")),
+          TextButton(onPressed: ()=>{Navigator.push(context, MaterialPageRoute(builder: (context)=>Report()))}, child: Text("Present Reports")),
         ],
       ),
     );

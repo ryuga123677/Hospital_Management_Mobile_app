@@ -1,73 +1,52 @@
 class Doctorlistmodel {
-  Doctorlistmodel({
-     required this.id,
-    required this.username,
-    required this.email,
-    required this.hospitalname,
-    required this.appointments,
-    required this.died,
-    required this.patienttreated,
-    required this.currentlytreating,
-    required this.patientreports,
-    required this.v,});
+  String? sId;
+  String? username;
+  String? email;
+  String? hospitalname;
+  List<String>? appointments;
+  List<String>? died;
+  List<String>? patienttreated;
+  List<String>? currentlytreating;
+  List<String>? patientreports;
+  int? iV;
 
-  Doctorlistmodel.fromJson(dynamic json) {
-    id = json['_id'];
+  Doctorlistmodel(
+      {this.sId,
+        this.username,
+        this.email,
+        this.hospitalname,
+        this.appointments,
+        this.died,
+        this.patienttreated,
+        this.currentlytreating,
+        this.patientreports,
+        this.iV});
+
+  Doctorlistmodel.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
     username = json['username'];
     email = json['email'];
     hospitalname = json['hospitalname'];
-    if (json['appointments'] != null) {
-      appointments = [];
-      json['appointments'].forEach((v) {
-        appointments.add(Dynamic.fromJson(v));
-      });
-    }
-    if (json['died'] != null) {
-      died = [];
-      json['died'].forEach((v) {
-        died.add(Dynamic.fromJson(v));
-      });
-    }
-    patienttreated = json['patienttreated'] != null ? json['patienttreated'].cast<String>() : [];
-    if (json['currentlytreating'] != null) {
-      currentlytreating = [];
-      json['currentlytreating'].forEach((v) {
-        currentlytreating.add(Dynamic.fromJson(v));
-      });
-    }
-    patientreports = json['patientreports'] != null ? json['patientreports'].cast<String>() : [];
-    v = json['__v'];
+    appointments = json['appointments'].cast<String>();
+    died = json['died'].cast<String>();
+    patienttreated = json['patienttreated'].cast<String>();
+    currentlytreating = json['currentlytreating'].cast<String>();
+    patientreports = json['patientreports'].cast<String>();
+    iV = json['__v'];
   }
-  String id;
-  String username;
-  String email;
-  String hospitalname;
-  List<dynamic> appointments;
-  List<dynamic> died;
-  List<String> patienttreated;
-  List<dynamic> currentlytreating;
-  List<String> patientreports;
-  int v;
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['_id'] = id;
-    map['username'] = username;
-    map['email'] = email;
-    map['hospitalname'] = hospitalname;
-    if (appointments != null) {
-      map['appointments'] = appointments.map((v) => v.toJson()).toList();
-    }
-    if (died != null) {
-      map['died'] = died.map((v) => v.toJson()).toList();
-    }
-    map['patienttreated'] = patienttreated;
-    if (currentlytreating != null) {
-      map['currentlytreating'] = currentlytreating.map((v) => v.toJson()).toList();
-    }
-    map['patientreports'] = patientreports;
-    map['__v'] = v;
-    return map;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['username'] = this.username;
+    data['email'] = this.email;
+    data['hospitalname'] = this.hospitalname;
+    data['appointments'] = this.appointments;
+    data['died'] = this.died;
+    data['patienttreated'] = this.patienttreated;
+    data['currentlytreating'] = this.currentlytreating;
+    data['patientreports'] = this.patientreports;
+    data['__v'] = this.iV;
+    return data;
   }
-
 }
