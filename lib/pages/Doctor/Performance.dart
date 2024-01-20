@@ -29,6 +29,12 @@ class _PerformanceState extends State<Performance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      appBar: AppBar(
+        backgroundColor: Colors.tealAccent.shade100,
+        title: Text('My Performance'),
+      ),
+      backgroundColor: Colors.tealAccent.shade100,
       body: Center(
         child: FutureBuilder(
 
@@ -40,7 +46,23 @@ class _PerformanceState extends State<Performance> {
             }
             else
             {
-              return Text(data.toString());
+              return Container(
+                  height: 30,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Color(0xfff8e896),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow:  [
+                      BoxShadow(
+                        color: Colors.black,
+                        offset: Offset(2, 2), // Set the offset to create the shadow on the bottom and right
+                        // Adjust the blur radius as needed
+                      ),
+                    ],
+                  ),
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Text(data.toString())));
             }
           },
         ),

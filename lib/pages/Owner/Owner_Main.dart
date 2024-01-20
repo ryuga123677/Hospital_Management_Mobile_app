@@ -29,51 +29,83 @@ class _OwnerMainState extends State<OwnerMain> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:Center(
-      child: FutureBuilder(
+    return Scaffold(
 
-        future: getinformation(),
-        builder: (context,snapshot){
-          if(snapshot.connectionState==ConnectionState.waiting)
-          {
-            return CircularProgressIndicator();
-          }
-          else
-          {
-            return ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (context,index)
-                {
-                  return ListTile(
+      backgroundColor: Colors.tealAccent,
+      appBar: AppBar(
+        backgroundColor: Colors.tealAccent,
+        title: Text('All Doctors'),
+        centerTitle: true,
 
-                    title: Text(data[index]['username'].toString()),
-                    subtitle: Row(children: [Text(data[index]['speciality'].toString()),
-                      Text(data[index]['performance'].toString()),
-                      InkWell(child: Icon(Icons.delete),onTap: ()async{
-                        final SharedPreferences prefs = await SharedPreferences.getInstance();
-                        final  ownername = await prefs.getString('ownername');
-
-                        final response = await http.delete(Uri.parse('http://10.0.2.2:3000/removedoctor?doctor=${data[index]['username'].toString()}&owner=${ownername}'));
-                        if(response.body=="success")
-                          {
-                            utils().toastmessage('Doctor removed');
-                          }
-                        else
-                          {
-                            utils().toastmessage('something went wrong');
-                          }
-                      },
-
-                      )
-                    ]),
-
-                  );
-                }
-            );
-          }
-        },
       ),
 
+      body:Stack(
+
+      children: [
+
+
+        Center(
+        child: FutureBuilder(
+
+          future: getinformation(),
+          builder: (context,snapshot){
+            if(snapshot.connectionState==ConnectionState.waiting)
+            {
+              return CircularProgressIndicator();
+            }
+            else
+            {
+              return ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context,index)
+                  {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.black, width: 1),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        title: Text(data[index]['username'].toString()),
+                        subtitle: Row(children: [Text(data[index]['speciality'].toString()),
+                          SizedBox(width:20),
+                          Text('Patient Cured-'+data[index]['patienttreated'].length.toString()),
+                          Spacer(),
+                          Text('Patient Died-'+data[index]['died'].length.toString()),
+                          SizedBox(width:20),
+                          InkWell(child: Icon(Icons.delete),onTap: ()async{
+                            final SharedPreferences prefs = await SharedPreferences.getInstance();
+                            final  ownername = await prefs.getString('ownername');
+
+                            final response = await http.delete(Uri.parse('http://10.0.2.2:3000/removedoctor?doctor=${data[index]['username'].toString()}&owner=${ownername}'));
+                            if(response.body=="success")
+                              {
+                                setState(() {
+                                  data.removeWhere((obj) => obj['username'] == data[index]['username'].toString());
+                                });
+                                utils().toastmessage('Doctor removed');
+                              }
+                            else
+                              {
+                                utils().toastmessage('something went wrong');
+                              }
+                          },
+
+                          )
+                        ]),
+                        tileColor: Color(0xfff8e896),
+                      ),
+                    );
+                  }
+              );
+            }
+          },
+        ),
+
+      ),
+
+      ],
     ),
     );
   }

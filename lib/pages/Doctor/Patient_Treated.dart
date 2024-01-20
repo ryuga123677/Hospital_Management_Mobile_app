@@ -27,6 +27,11 @@ class _PatientTreatedState extends State<PatientTreated> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.tealAccent.shade100,
+        title: Text('Patient Treated'),
+      ),
+      backgroundColor: Colors.tealAccent.shade100,
       body: Center(
         child: FutureBuilder(
 
@@ -42,16 +47,25 @@ class _PatientTreatedState extends State<PatientTreated> {
                   itemCount: data.length,
                   itemBuilder: (context,index)
                   {
-                    return ListTile(
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                          tileColor: Color(0xfff8e896),
 
-                      title:
-                          Row(children: [
-                            Text((index+1).toString()),
-                            SizedBox(width: 10,),
-                            Text(data[index]['username'].toString())
-                          ,
-                          ])
-                  );
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+
+                        title:
+                            Row(children: [
+                              Text((index+1).toString()),
+                              SizedBox(width: 10,),
+                              Text(data[index]['username'].toString())
+                            ,
+                            ])
+                                        ),
+                    );
 
 
             }
